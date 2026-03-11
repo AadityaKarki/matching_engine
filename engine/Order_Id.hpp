@@ -11,7 +11,9 @@ public:
     friend constexpr bool operator==(Order_Id a, Order_Id b) {
         return a.id_ == b.id_;
     }
-
+    friend std::ostream& operator<<(std::ostream& os, const Order_Id& id) {
+    return os << id.id_;
+}
     // Needed for unordered_map key
     struct Hash {
         std::size_t operator()(Order_Id oid) const noexcept {

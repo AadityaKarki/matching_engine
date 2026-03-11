@@ -128,29 +128,29 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
-main.obj: main.cpp.obj
-.PHONY : main.obj
+engine/main.obj: engine/main.cpp.obj
+.PHONY : engine/main.obj
 
 # target to build an object file
-main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/main.cpp.obj
-.PHONY : main.cpp.obj
+engine/main.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/engine/main.cpp.obj
+.PHONY : engine/main.cpp.obj
 
-main.i: main.cpp.i
-.PHONY : main.i
+engine/main.i: engine/main.cpp.i
+.PHONY : engine/main.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/main.cpp.i
-.PHONY : main.cpp.i
+engine/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/engine/main.cpp.i
+.PHONY : engine/main.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+engine/main.s: engine/main.cpp.s
+.PHONY : engine/main.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/main.cpp.s
-.PHONY : main.cpp.s
+engine/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/engine/main.cpp.s
+.PHONY : engine/main.cpp.s
 
 # Help Target
 help:
@@ -161,9 +161,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... main
-	@echo ... main.obj
-	@echo ... main.i
-	@echo ... main.s
+	@echo ... engine/main.obj
+	@echo ... engine/main.i
+	@echo ... engine/main.s
 .PHONY : help
 
 

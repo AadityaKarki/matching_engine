@@ -24,7 +24,9 @@ public:
     friend constexpr Quantity min(Quantity a, Quantity b) {
         return a < b ? a : b;
     }
-
+    friend std::ostream& operator<<(std::ostream& os, const Quantity& q) {
+    return os << q.quantity_;
+}
 private:
     uint32_t quantity_;
 };

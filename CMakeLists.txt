@@ -9,5 +9,5 @@ add_library(matching_engine INTERFACE)
 target_include_directories(matching_engine INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/engine)
 
 # Create an executable main
-add_executable(main main.cpp)
+add_executable(main engine/main.cpp)
 target_link_libraries(main PRIVATE matching_engine)
