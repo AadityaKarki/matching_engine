@@ -10,10 +10,13 @@
 class Order {
 public:
     Order(Order_Id id, Side side, Price price, Quantity quantity)
-        : id_(id), side_(side), price_(price), initial_quantity_(quantity), remaining_quantity_(quantity) {}
+        : id_(id), type_(Order_Type::Limit), side_(side), price_(price), initial_quantity_(quantity), remaining_quantity_(quantity) {}
+    Order (Order_Id id, Side side, Quantity quantity)
+        : id_(id), type_(Order_Type::Market), side_(side), initial_quantity_(quantity), remaining_quantity_(quantity) {}
 
     void displayOrder() const {
         std::cout << "Order ID: " << id_ 
+                  << " Type: " << type_ 
                   << " Side: " << side_ 
                   << " Price: " << price_ 
                   << " Initial Qty: " << initial_quantity_ 
@@ -40,6 +43,7 @@ public:
 
 private:
     Order_Id id_;
+    Order_Type type_;
     Side     side_;
     Price    price_;
     Quantity initial_quantity_;
