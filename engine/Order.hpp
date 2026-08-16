@@ -3,31 +3,36 @@
 #include "Order_Id.hpp"
 #include "Price.hpp"
 #include "Quantity.hpp"
+#include "Order_Type.hpp"
 #include <stdexcept>
-#include <iostream>
 #include <list>
+#include <memory>
 
 class Order {
 public:
-    Order(Order_Id id, Side side, Price price, Quantity quantity)
-        : id_(id), type_(Order_Type::Limit), side_(side), price_(price), initial_quantity_(quantity), remaining_quantity_(quantity) {}
-    Order (Order_Id id, Side side, Quantity quantity)
-        : id_(id), type_(Order_Type::Market), side_(side), initial_quantity_(quantity), remaining_quantity_(quantity) {}
+    // Limit order
+    Order(Order_Id id, Side side, Price price, Quantity quantity) noexcept
+        : id_(id), type_(Order_Type::Limit), side_(side), price_(price),
+          initial_quantity_(quantity), remaining_quantity_(quantity) {}
 
-    void displayOrder() const {
-        std::cout << "Order ID: " << id_ 
-                  << " Type: " << type_ 
-                  << " Side: " << side_ 
-                  << " Price: " << price_ 
-                  << " Initial Qty: " << initial_quantity_ 
-                  << " Remaining Qty: " << remaining_quantity_ << "\n";
-    }
+    // Market order
+    Order(Order_Id id, Side side, Quantity quantity) noexcept
+        : id_(id), type_(Order_Type::Market), side_(side), price_(),
+          initial_quantity_(quantity), remaining_quantity_(quantity) {}
 
-    Order_Id  getOrderId()          const { return id_; }
-    Side      getSide()             const { return side_; }
-    Price     getPrice()            const { return price_; }
-    Quantity  getInitialQuantity()  const { return initial_quantity_; }
-    Quantity  getRemainingQuantity()const { return remaining_quantity_; }
+    // Non-copyable, movable
+    Order(const Order&)            = delete;
+    Order& operator=(const Order&) = delete;
+    Order(Order&&)                 = default;
+    Order& operator=(Order&&)      = default;
+
+    [[nodiscard]] Order_Id   getOrderId()            const noexcept { return id_; }
+    [[nodiscard]] Order_Type getType()               const noexcept { return type_; }
+    [[nodiscard]] Side       getSide()               const noexcept { return side_; }
+    [[nodiscard]] Price      getPrice()              const noexcept { return price_; }
+    [[nodiscard]] Quantity   getInitialQuantity()    const noexcept { return initial_quantity_; }
+    [[nodiscard]] Quantity   getRemainingQuantity()  const noexcept { return remaining_quantity_; }
+    [[nodiscard]] bool       isFilled()              const noexcept { return remaining_quantity_ == Quantity{0}; }
 
     void Fill(Quantity quantity) {
         if (quantity > remaining_quantity_)
@@ -35,19 +40,18 @@ public:
         remaining_quantity_ -= quantity;
     }
 
-    bool isFilled() const { return remaining_quantity_ == Quantity{0}; }
-
-  
+    // Non-owning position handle in the price-level list (set by Order_Book)
     using ListIt = std::list<Order*>::iterator;
-    ListIt location_;          
+    ListIt location_;
 
 private:
-    Order_Id id_;
+    Order_Id   id_;
     Order_Type type_;
-    Side     side_;
-    Price    price_;
-    Quantity initial_quantity_;
-    Quantity remaining_quantity_;
+    Side       side_;
+    Price      price_;
+    Quantity   initial_quantity_;
+    Quantity   remaining_quantity_;
 };
 
-using Orderptr = Order*;
+using Orderptr    = std::unique_ptr<Order>;   // owning handle
+using OrderRawPtr = Order*;                   // non-owning observer
